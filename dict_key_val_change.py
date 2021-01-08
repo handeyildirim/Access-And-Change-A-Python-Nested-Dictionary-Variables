@@ -1,25 +1,3 @@
-daq_entries = {
-    'V_SBC_1msState':        {'daq_list': -1, 'odt': -1, 'odt_entry': -1, 'bitoff': 255, 'size': 4, 'ecu_addr_ext': 0, 'ecu_addr': 1879135900, 'event': 2},
-    'V_DEM_SystemUpCounter': {'daq_list': -1, 'odt': -1, 'odt_entry': -1, 'bitoff': 255, 'size': 4, 'ecu_addr_ext': 0, 'ecu_addr': 1879243776, 'event': 2},
-    'V_TM_Counter':          {'daq_list': -1, 'odt': -1, 'odt_entry': -1, 'bitoff': 255, 'size': 4, 'ecu_addr_ext': 0, 'ecu_addr': 1879167772, 'event': 1},
-    'V_TM_Counter_1':        {'daq_list': -1, 'odt': -1, 'odt_entry': -1, 'bitoff': 255, 'size': 1, 'ecu_addr_ext': 0, 'ecu_addr': 1879167772, 'event': 2},
-    'V_TM_Counter_6':        {'daq_list': -1, 'odt': -1, 'odt_entry': -1, 'bitoff': 255, 'size': 6, 'ecu_addr_ext': 0, 'ecu_addr': 1879167772, 'event': 2},
-    'V_CSM_SYS_EcuControl':  {'daq_list': -1, 'odt': -1, 'odt_entry': -1, 'bitoff': 255, 'size': 1, 'ecu_addr_ext': 0, 'ecu_addr': 1610653796, 'event': 1}
-}
-
-# first find the first event value keep it in event list
-# until event val change:
-    # +1 for daq_list
-    # +1 for first odt, then count up odt sequentially
-    # +1 for first odt_entry, then count up all odt_entry sequentially
-# if first event val change:
-    # daq_list and odt will have the oldest val
-    # then, +1 for daq_list
-    # then, +1 for odt, then count up all odt sequentially
-    # odt_entry continue from previous value
-# find the next event value
-# when it is changed, start from beginning
-
 event_val = 0
 
 key_list = {}
@@ -92,15 +70,13 @@ for key in daq_entries.items():
                 count_all_events = event_lists.count(current_event)
                 if count_all_events == 1:   # if it is first time to use current event
                     # for i in range(event_list_length):
-                    daq_entries[main_keys]['odt_entry'] = odt_entry_entries[-1] + 1
+                    index = max(index for index, item in enumerate(event_lists) if item == current_event)
+                    daq_entries[main_keys]['odt_entry'] = odt_entry_entries[-1] + index + 1
                     odt_entry_entries.append(daq_entries[main_keys]['odt_entry'])
-
-                    # last_event_index = max(index for index, item in enumerate(event_lists) if item == current_event)
                 else:   # if it is not first time to use current event
-                    # new_event_lists = event_lists[:-1]  # new list without last item of the current event list
-                    # final_index = max(index for index, item in enumerate(new_event_lists) if item == current_event)
-                    daq_entries[main_keys]['odt_entry'] = odt_entry_entries[-1]
+                    new_event_lists = event_lists[:-1]  # new list without last item of the current event list
+                    final_index = max(index for index, item in enumerate(new_event_lists) if item == current_event)
+                    daq_entries[main_keys]['odt_entry'] = odt_entry_entries[final_index] + 1
                     odt_entry_entries.append(daq_entries[main_keys]['odt_entry'])
-
     event_val = current_event
     print('son: ' + str(daq_entries[key[0]]))

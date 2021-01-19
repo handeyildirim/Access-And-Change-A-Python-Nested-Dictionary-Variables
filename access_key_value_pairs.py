@@ -5,10 +5,10 @@ def key_value_accessing():
     "model": "Mustang",
     "year": 1964,
     "color": {
-        "blue": "Dark",
-        "green": "Dark","Leight",
-        "pink": "Dark","Leight", "Bright"
-     }
+      "blue": "Dark",
+      "green": ['Dark','Leight'],
+      "pink": ['Dark','Leight', 'Bright']
+    }
   }
   
   # First, get the dict_values class which includes keys of the dictionary to understand what values() method will return

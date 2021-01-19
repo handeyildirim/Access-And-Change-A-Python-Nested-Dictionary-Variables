@@ -4,10 +4,10 @@ def key_value_accessing():
     "brand": "Ford",
     "model": "Mustang",
     "year": 1964,
-    "color" = {
-        	"blue": "Dark",
-          "green": "Dark","Leight",
-          "pink": "Dark","Leight", "Bright"
+    "color": {
+        "blue": "Dark",
+        "green": "Dark","Leight",
+        "pink": "Dark","Leight", "Bright"
      }
   }
   
@@ -37,7 +37,10 @@ def key_value_accessing():
   
   # For the last key-value pair:
   print(list(car.items())[2])  # this print returns ('year', '1964')
-  print((list(car.items())[2])[1]) # this print returns '1964'
+  print((list(car.items())[2])[1])  # this print returns '1964'
+  
+  # Sometimes there will be nested dictionaries which include a dictionary inside of the another dictionary
+  nested_dict = list(car.items())[3]  # this print returns the dictionary called "color"
 
 if __name__ == '__main__':
   call_func = key_value_accessing()
